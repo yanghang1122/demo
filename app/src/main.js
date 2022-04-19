@@ -25,3 +25,12 @@ new Vue({
   //注册仓库 组件实例化对象身上就会多一个$store属性
   store
 }).$mount('#app')
+
+
+
+// git提交代码
+// 1.git clone （然后将所传代码放入当前文件夹中）
+// 2.git add .
+// 3.git commit -m "add"
+// 4. git push
+
