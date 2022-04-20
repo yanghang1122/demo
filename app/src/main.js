@@ -1,5 +1,12 @@
 import Vue from 'vue'
 import App from './App.vue'
+// 哈哈哈
+// 哈哈哈
+// 哈哈哈
+// 哈哈哈
+// 哈哈哈
+// 哈哈哈
+// 哈哈哈
 
 import TypeNav from "@/components/TypeNav/index.vue"
 import Carousel from "@/components/Carousel/index.vue"
