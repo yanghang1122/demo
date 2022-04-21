@@ -119,6 +119,28 @@
 	import SearchSelector from './SearchSelector/SearchSelector'
 	export default {
 		name: 'Search',
+		data(){
+			return{
+				searchParams:{
+					category1Id:"", // 一级分类id
+					category2Id:"", // 二级分类id
+					category3Id:"", // 三级分类id
+					categoryName:"", // 分类名字
+					keyword:"",	// 搜索的关键字
+					order:"",	// 排序
+					pageNo:1, // 分页器 代表当前是第几页
+					pageSize:3, // 一页显示几个数据
+					props:[], // 平台售卖属性的参数
+					trademark:"" // 品牌
+				}
+			}
+		},
+		beforeMount(){
+			
+			// 合并对象 把this.$route.query和this.$route.params里面的参数名 放到this.searchParams里面
+			Object.assign(this.searchParams,this.$route.query,this.$route.params)
+			console.log(this.searchParams)
+		},
 
 		components: {
 			SearchSelector
@@ -127,7 +149,12 @@
 			...mapGetters(["goodsList"])
 		},
 		mounted() {
-			this.$store.dispatch("getSearchList", {})
+			this.getDate();
+		},
+		methods:{
+			getDate(){
+				this.$store.dispatch("getSearchList", this.searchParams)
+			}
 		}
 	}
 </script>
