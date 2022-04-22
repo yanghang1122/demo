@@ -11,10 +11,8 @@
 						</li>
 					</ul>
 					<ul class="fl sui-tag">
-						<li class="with-x">手机</li>
-						<li class="with-x">iphone<i>×</i></li>
-						<li class="with-x">华为<i>×</i></li>
-						<li class="with-x">OPPO<i>×</i></li>
+						<li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">×</i></li>
+						
 					</ul>
 				</div>
 
@@ -139,7 +137,6 @@
 			
 			// 合并对象 把this.$route.query和this.$route.params里面的参数名 放到this.searchParams里面
 			Object.assign(this.searchParams,this.$route.query,this.$route.params)
-			console.log(this.searchParams)
 		},
 
 		components: {
@@ -150,10 +147,25 @@
 		},
 		mounted() {
 			this.getDate();
+			
 		},
 		methods:{
 			getDate(){
 				this.$store.dispatch("getSearchList", this.searchParams)
+			},
+			removeCategoryName(){
+				this.searchParams.categoryName = ''
+			}
+		},
+		watch:{
+			$route(){
+				this.searchParams.category1Id = '';
+				this.searchParams.category2Id = '';
+				this.searchParams.category3Id = '';
+				Object.assign(this.searchParams,this.$route.query,this.$route.params)
+				this.getDate();
+				
+				
 			}
 		}
 	}
