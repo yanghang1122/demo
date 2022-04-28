@@ -153,11 +153,13 @@
 			getDate(){
 				this.$store.dispatch("getSearchList", this.searchParams)
 			},
+			//点击删除面包写 把带给服务器的参数清空 并且重新发请求
 			removeCategoryName(){
 				this.searchParams.categoryName = '';
 				this.searchParams.category1Id = '';
 				this.searchParams.category2Id = '';
 				this.searchParams.category3Id = '';
+				this.getDate();
 			}
 		},
 		watch:{
