@@ -3,7 +3,7 @@
   <div id="app">
     <Header></Header>
     <router-view></router-view>
-      <!-- 在路由里配置的meat信息来控制footer组建的显示隐藏 -->
+      <!-- 在路由里配置的meat信息来控制footer组建的显示隐藏 git -->
     <Footer v-show="$route.meta.show"></Footer>
   </div>
 </template>
@@ -13,6 +13,9 @@ import Header from './components/Header/index'
 import Footer from './components/Footer/index'
 
 export default {
+	
+	
+	
 	
   name: 'App',
   components: {
