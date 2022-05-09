@@ -4,7 +4,7 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
-          <li v-for="(trademark,index) in trademarkList" :key="trademark.tmId">{{trademark.tmName}}</li>
+          <li v-for="(trademark,index) in trademarkList" :key="trademark.tmId" @click="tradeMarkHandler(trademark)">{{trademark.tmName}}</li>
           
         </ul>
       </div>
@@ -35,6 +35,12 @@
     name: 'SearchSelector',
 	computed:{
 		...mapGetters(["attrsList","trademarkList"])
+	},
+	methods:{
+		// 子给父传递数据 在自己的点击事件里面 调用父在自己组件标签上的自定义事件第一个参数是事件名第二个参数是数据
+		tradeMarkHandler(trademark){
+			this.$emit("tradeMarkinfo",trademark)
+		}
 	}
   }
 </script>

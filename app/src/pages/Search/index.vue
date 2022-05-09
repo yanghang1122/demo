@@ -13,12 +13,13 @@
 					<ul class="fl sui-tag">
 						<li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">×</i></li>
 						<li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyword">×</i></li>
+						<li class="with-x" v-if="searchParams.trademark">{{searchParams.trademark.split(":")[1]}}<i @click="removeTrademark">×</i></li>
 						
 					</ul>
 				</div>
 
-				<!--selector-->
-				<SearchSelector />
+				<!--selector 给子组件弄一个自定义事件  调用这个事件接收子组件给传过来的参数--> 
+				<SearchSelector @tradeMarkinfo="tradeMarkinfo" />
 
 				<!--details-->
 				<div class="details clearfix">
@@ -170,10 +171,18 @@
 				this.searchParams.keyword = undefined;
 				this.getDate();
 				this.$bus.$emit("clear")
-				
 				if(this.$route.query){
 					this.$router.push({name:"search",query:this.$route.query})
 				}
+			},
+			tradeMarkinfo(tradeMark){
+				// console.log(tradeMark.tmId)
+				this.searchParams.trademark = `${tradeMark.tmId}:${tradeMark.tmName}`;
+				this.getDate();
+			},
+			removeTrademark(){
+				this.searchParams.trademark = undefined;
+				this.getDate();
 			}
 		},
 		watch:{
