@@ -12,6 +12,7 @@
 					</ul>
 					<ul class="fl sui-tag">
 						<li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">×</i></li>
+						<li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyword">×</i></li>
 						
 					</ul>
 				</div>
@@ -147,26 +148,39 @@
 		},
 		mounted() {
 			this.getDate();
-			
 		},
 		methods:{
 			getDate(){
 				this.$store.dispatch("getSearchList", this.searchParams)
 			},
-			//点击删除面包写 把带给服务器的参数清空 并且重新发请求
+			//点击删除面包写 把带给服务器的参数清空 并且重新发请求 把响应的字段变为uddifiend 就不会带给服务器
 			removeCategoryName(){
-				this.searchParams.categoryName = '';
-				this.searchParams.category1Id = '';
-				this.searchParams.category2Id = '';
-				this.searchParams.category3Id = '';
+				this.searchParams.categoryName = undefined;
+				this.searchParams.category1Id = undefined;
+				this.searchParams.category2Id = undefined;
+				this.searchParams.category3Id = undefined;
 				this.getDate();
+				//清空地址栏的数据 清空自己带query参数 留着params参数在跳转
+				if(this.$route.params){
+					this.$router.push({name:"search",params:this.$route.params})
+				}
+			},
+			//点击清空搜索框的数据
+			removeKeyword(){
+				this.searchParams.keyword = undefined;
+				this.getDate();
+				this.$bus.$emit("clear")
+				
+				if(this.$route.query){
+					this.$router.push({name:"search",query:this.$route.query})
+				}
 			}
 		},
 		watch:{
 			$route(){
-				this.searchParams.category1Id = '';
-				this.searchParams.category2Id = '';
-				this.searchParams.category3Id = '';
+				this.searchParams.category1Id = undefined;
+				this.searchParams.category2Id = undefined;
+				this.searchParams.category3Id = undefined;
 				Object.assign(this.searchParams,this.$route.query,this.$route.params)
 				this.getDate();
 				
