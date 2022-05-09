@@ -45,3 +45,5 @@ new Vue({
 // 3.git commit -m "add"
 // 4. git push
 
+// git config --global http.sslVerify "false"
+
