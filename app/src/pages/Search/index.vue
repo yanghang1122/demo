@@ -11,38 +11,31 @@
 						</li>
 					</ul>
 					<ul class="fl sui-tag">
-						<li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">×</i></li>
-						<li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyword">×</i></li>
-						<li class="with-x" v-if="searchParams.trademark">{{searchParams.trademark.split(":")[1]}}<i @click="removeTrademark">×</i></li>
-						
+						<li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i
+								@click="removeCategoryName">×</i></li>
+						<li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i
+								@click="removeKeyword">×</i></li>
+						<li class="with-x" v-if="searchParams.trademark">{{searchParams.trademark.split(":")[1]}}<i
+								@click="removeTrademark">×</i></li>
+						<li class="with-x" v-for="(attrValue,index) in searchParams.props">{{attrValue.split(":")[1]}}<i
+								@click="removeAttr(index)">×</i></li>
 					</ul>
 				</div>
 
-				<!--selector 给子组件弄一个自定义事件  调用这个事件接收子组件给传过来的参数--> 
-				<SearchSelector @tradeMarkinfo="tradeMarkinfo" />
+				<!--selector 给子组件弄一个自定义事件  调用这个事件接收子组件给传过来的参数-->
+				<SearchSelector @tradeMarkinfo="tradeMarkinfo" @attrInfo="attrInfo" />
 
 				<!--details-->
 				<div class="details clearfix">
 					<div class="sui-navbar">
 						<div class="navbar-inner filter">
 							<ul class="sui-nav">
-								<li class="active">
-									<a href="#">综合</a>
+								<li :class="{ active :  isOne}" @click="changeOrder(1)">
+									<a>综合<span v-show="isOne" class="iconfont" :class="{'icon-up': isAsc,'icon-down':isDesc}"></span></a>
 								</li>
-								<li>
-									<a href="#">销量</a>
-								</li>
-								<li>
-									<a href="#">新品</a>
-								</li>
-								<li>
-									<a href="#">评价</a>
-								</li>
-								<li>
-									<a href="#">价格⬆</a>
-								</li>
-								<li>
-									<a href="#">价格⬇</a>
+
+								<li :class="{ active : isTwo }" @click="changeOrder(2)">
+									<a>价格<span v-show="isTwo" class="iconfont" :class="{'icon-up': isAsc,'icon-down':isDesc}"></span></a>
 								</li>
 							</ul>
 						</div>
@@ -68,7 +61,8 @@
 										<i class="command">已有<span>2000</span>人评价</i>
 									</div>
 									<div class="operate">
-										<a href="success-cart.html" target="_blank" class="sui-btn btn-bordered btn-danger">加入购物车</a>
+										<a href="success-cart.html" target="_blank"
+											class="sui-btn btn-bordered btn-danger">加入购物车</a>
 										<a href="javascript:void(0);" class="sui-btn btn-bordered">收藏</a>
 									</div>
 								</div>
@@ -119,81 +113,132 @@
 	import SearchSelector from './SearchSelector/SearchSelector'
 	export default {
 		name: 'Search',
-		data(){
-			return{
-				searchParams:{
-					category1Id:"", // 一级分类id
-					category2Id:"", // 二级分类id
-					category3Id:"", // 三级分类id
-					categoryName:"", // 分类名字
-					keyword:"",	// 搜索的关键字
-					order:"",	// 排序
-					pageNo:1, // 分页器 代表当前是第几页
-					pageSize:3, // 一页显示几个数据
-					props:[], // 平台售卖属性的参数
-					trademark:"" // 品牌
+		data() {
+			return {
+				searchParams: {
+					category1Id: "", // 一级分类id
+					category2Id: "", // 二级分类id
+					category3Id: "", // 三级分类id
+					categoryName: "", // 分类名字
+					keyword: "", // 搜索的关键字
+					order: "1:desc", // 排序
+					pageNo: 1, // 分页器 代表当前是第几页
+					pageSize: 3, // 一页显示几个数据
+					props: [], // 平台售卖属性的参数
+					trademark: "" // 品牌
 				}
 			}
 		},
-		beforeMount(){
-			
+		beforeMount() {
+
 			// 合并对象 把this.$route.query和this.$route.params里面的参数名 放到this.searchParams里面
-			Object.assign(this.searchParams,this.$route.query,this.$route.params)
+			Object.assign(this.searchParams, this.$route.query, this.$route.params)
 		},
 
 		components: {
 			SearchSelector
 		},
 		computed: {
-			...mapGetters(["goodsList"])
+			...mapGetters(["goodsList"]),
+			
+			isOne(){
+				return this.searchParams.order.indexOf('1') != -1
+			},
+			isTwo(){
+				return this.searchParams.order.indexOf('2') != -1
+			},
+			isAsc(){
+				return this.searchParams.order.indexOf('asc') != -1
+			},
+			isDesc(){
+				return this.searchParams.order.indexOf('desc') != -1
+			}
 		},
 		mounted() {
 			this.getDate();
 		},
-		methods:{
-			getDate(){
+		methods: {
+			getDate() {
 				this.$store.dispatch("getSearchList", this.searchParams)
 			},
 			//点击删除面包写 把带给服务器的参数清空 并且重新发请求 把响应的字段变为uddifiend 就不会带给服务器
-			removeCategoryName(){
+			removeCategoryName() {
 				this.searchParams.categoryName = undefined;
 				this.searchParams.category1Id = undefined;
 				this.searchParams.category2Id = undefined;
 				this.searchParams.category3Id = undefined;
 				this.getDate();
 				//清空地址栏的数据 清空自己带query参数 留着params参数在跳转
-				if(this.$route.params){
-					this.$router.push({name:"search",params:this.$route.params})
+				if (this.$route.params) {
+					this.$router.push({
+						name: "search",
+						params: this.$route.params
+					})
 				}
 			},
 			//点击清空搜索框的数据
-			removeKeyword(){
+			removeKeyword() {
 				this.searchParams.keyword = undefined;
 				this.getDate();
 				this.$bus.$emit("clear")
-				if(this.$route.query){
-					this.$router.push({name:"search",query:this.$route.query})
+				if (this.$route.query) {
+					this.$router.push({
+						name: "search",
+						query: this.$route.query
+					})
 				}
 			},
-			tradeMarkinfo(tradeMark){
+			tradeMarkinfo(tradeMark) {
 				// console.log(tradeMark.tmId)
 				this.searchParams.trademark = `${tradeMark.tmId}:${tradeMark.tmName}`;
 				this.getDate();
 			},
-			removeTrademark(){
+			removeTrademark() {
 				this.searchParams.trademark = undefined;
 				this.getDate();
+			},
+			attrInfo(attr, attrValue) {
+				let props = `${attr.attrId}:${attrValue}:${attr.attrName}`
+				if (this.searchParams.props.indexOf(props) == -1) {
+					this.searchParams.props.push(props);
+				}
+				this.getDate();
+			},
+			removeAttr(index) {
+				this.searchParams.props.splice(index, 1);
+				this.getDate();
+			},
+			changeOrder(flag){
+				//1或者是2
+				let originFlag = this.searchParams.order.split(":")[0]
+				//asc或者是desc
+				let originSort = this.searchParams.order.split(":")[1]
+				
+				let newOrder = ''
+				
+				//  判断你传过来的1或者2 是不是和目前的参数一样 
+				// 如果一样第一个参数保持不变就还是第一个参数 判断第二个参数然后取反 
+				// 如果不一样第一个参数就是你传过来的参数然后默认排序走降序 然后重复点击第二次 第一个参数就一样了 然后第一个参数不变 第二个参数取反
+				if(flag == originFlag){
+					newOrder = `${originFlag}:${originSort == 'asc' ? 'desc' : 'asc'}`
+				}else{
+					newOrder = `${flag}:${'desc'}`
+				}
+				
+				this.searchParams.order = newOrder;
+				this.getDate();
+				
 			}
 		},
-		watch:{
-			$route(){
+		watch: {
+			$route() {
 				this.searchParams.category1Id = undefined;
 				this.searchParams.category2Id = undefined;
 				this.searchParams.category3Id = undefined;
-				Object.assign(this.searchParams,this.$route.query,this.$route.params)
+				Object.assign(this.searchParams, this.$route.query, this.$route.params)
 				this.getDate();
-				
-				
+
+
 			}
 		}
 	}
@@ -337,9 +382,11 @@
 									padding-left: 15px;
 									width: 215px;
 									height: 255px;
-									img{
+
+									img {
 										width: 100%;
 									}
+
 									a {
 										color: #666;
 
@@ -347,7 +394,7 @@
 											max-width: 100%;
 											height: auto;
 											vertical-align: middle;
-											
+
 										}
 									}
 								}

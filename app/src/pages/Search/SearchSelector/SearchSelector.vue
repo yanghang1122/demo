@@ -17,7 +17,7 @@
       <div class="fl key">{{attr.attrName}}</div>
       <div class="fl value">
         <ul class="type-list">
-          <li v-for="(attrValue,index) in attr.attrValueList" :key="index">
+          <li v-for="(attrValue,index) in attr.attrValueList" :key="index" @click="attrInfo(attr,attrValue)">
             <a>{{attrValue}}</a>
           </li>
         
@@ -40,6 +40,10 @@
 		// 子给父传递数据 在自己的点击事件里面 调用父在自己组件标签上的自定义事件第一个参数是事件名第二个参数是数据
 		tradeMarkHandler(trademark){
 			this.$emit("tradeMarkinfo",trademark)
+		},
+		attrInfo(attr,attrValue){
+			this.$emit("attrInfo",attr,attrValue)
+			// console.log(attr,attrValue)
 		}
 	}
   }
@@ -114,7 +118,7 @@
             display: block;
             margin-right: 30px;
             line-height: 26px;
-
+			cursor: pointer;
             a {
               text-decoration: none;
               color: #666;
