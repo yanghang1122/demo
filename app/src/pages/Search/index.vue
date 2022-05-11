@@ -31,11 +31,13 @@
 						<div class="navbar-inner filter">
 							<ul class="sui-nav">
 								<li :class="{ active :  isOne}" @click="changeOrder(1)">
-									<a>综合<span v-show="isOne" class="iconfont" :class="{'icon-up': isAsc,'icon-down':isDesc}"></span></a>
+									<a>综合<span v-show="isOne" class="iconfont"
+											:class="{'icon-up': isAsc,'icon-down':isDesc}"></span></a>
 								</li>
 
 								<li :class="{ active : isTwo }" @click="changeOrder(2)">
-									<a>价格<span v-show="isTwo" class="iconfont" :class="{'icon-up': isAsc,'icon-down':isDesc}"></span></a>
+									<a>价格<span v-show="isTwo" class="iconfont"
+											:class="{'icon-up': isAsc,'icon-down':isDesc}"></span></a>
 								</li>
 							</ul>
 						</div>
@@ -70,35 +72,7 @@
 
 						</ul>
 					</div>
-					<div class="fr page">
-						<div class="sui-pagination clearfix">
-							<ul>
-								<li class="prev disabled">
-									<a href="#">«上一页</a>
-								</li>
-								<li class="active">
-									<a href="#">1</a>
-								</li>
-								<li>
-									<a href="#">2</a>
-								</li>
-								<li>
-									<a href="#">3</a>
-								</li>
-								<li>
-									<a href="#">4</a>
-								</li>
-								<li>
-									<a href="#">5</a>
-								</li>
-								<li class="dotted"><span>...</span></li>
-								<li class="next">
-									<a href="#">下一页»</a>
-								</li>
-							</ul>
-							<div><span>共10页&nbsp;</span></div>
-						</div>
-					</div>
+					<pagination></pagination>
 				</div>
 			</div>
 		</div>
@@ -140,17 +114,17 @@
 		},
 		computed: {
 			...mapGetters(["goodsList"]),
-			
-			isOne(){
+
+			isOne() {
 				return this.searchParams.order.indexOf('1') != -1
 			},
-			isTwo(){
+			isTwo() {
 				return this.searchParams.order.indexOf('2') != -1
 			},
-			isAsc(){
+			isAsc() {
 				return this.searchParams.order.indexOf('asc') != -1
 			},
-			isDesc(){
+			isDesc() {
 				return this.searchParams.order.indexOf('desc') != -1
 			}
 		},
@@ -208,26 +182,29 @@
 				this.searchParams.props.splice(index, 1);
 				this.getDate();
 			},
-			changeOrder(flag){
+			changeOrder(flag) {
 				//1或者是2
 				let originFlag = this.searchParams.order.split(":")[0]
 				//asc或者是desc
 				let originSort = this.searchParams.order.split(":")[1]
-				
+
 				let newOrder = ''
-				
+
 				//  判断你传过来的1或者2 是不是和目前的参数一样 
 				// 如果一样第一个参数保持不变就还是第一个参数 判断第二个参数然后取反 
 				// 如果不一样第一个参数就是你传过来的参数然后默认排序走降序 然后重复点击第二次 第一个参数就一样了 然后第一个参数不变 第二个参数取反
-				if(flag == originFlag){
+
+
+				//判断点击的是不是同一个按钮
+				if (flag == originFlag) {
 					newOrder = `${originFlag}:${originSort == 'asc' ? 'desc' : 'asc'}`
-				}else{
+				} else {
 					newOrder = `${flag}:${'desc'}`
 				}
-				
+
 				this.searchParams.order = newOrder;
 				this.getDate();
-				
+
 			}
 		},
 		watch: {
