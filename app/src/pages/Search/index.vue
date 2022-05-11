@@ -47,9 +47,13 @@
 
 							<li class="yui3-u-1-5" v-for="(good,index) in goodsList" :key="good.id">
 								<div class="list-wrap">
-									<div class="p-img">
-										<img :src="good.defaultImg" />
-									</div>
+										<router-link :to="`/detail/${good.id}`">
+											
+												<img :src="good.defaultImg" />
+												
+											
+										</router-link>
+										
 									<div class="price">
 										<strong>
 											<em>¥</em>
@@ -72,7 +76,7 @@
 
 						</ul>
 					</div>
-					<pagination></pagination>
+					<pagination :pageNo="searchParams.pageNo" :pageSize="searchParams.pageSize" :total="total" :continues="5" @getPageNo="getPageNo"></pagination>
 				</div>
 			</div>
 		</div>
@@ -80,9 +84,7 @@
 </template>
 
 <script>
-	import {
-		mapGetters
-	} from "vuex"
+	import {mapGetters,mapState} from "vuex"
 
 	import SearchSelector from './SearchSelector/SearchSelector'
 	export default {
@@ -126,7 +128,12 @@
 			},
 			isDesc() {
 				return this.searchParams.order.indexOf('desc') != -1
-			}
+			},
+			...mapState({
+				total:(state)=>{
+					return state.search.searchList.total
+				}
+			})
 		},
 		mounted() {
 			this.getDate();
@@ -205,6 +212,10 @@
 				this.searchParams.order = newOrder;
 				this.getDate();
 
+			},
+			getPageNo(pageNo){
+				this.searchParams.pageNo = pageNo;
+				this.getDate();
 			}
 		},
 		watch: {
@@ -355,6 +366,9 @@
 							line-height: 28px;
 
 							.list-wrap {
+								img {
+									width: 100%;
+								}
 								.p-img {
 									padding-left: 15px;
 									width: 215px;
