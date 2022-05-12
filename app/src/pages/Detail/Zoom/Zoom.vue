@@ -1,9 +1,9 @@
 <template>
   <div class="spec-preview">
-    <img src="../images/s1.png" />
+    <img :src="skuImageList[currentIndex].imgUrl" />
     <div class="event"></div>
     <div class="big">
-      <img src="../images/s1.png" />
+    <img :src="skuImageList[currentIndex].imgUrl" />
     </div>
     <div class="mask"></div>
   </div>
@@ -12,6 +12,18 @@
 <script>
   export default {
     name: "Zoom",
+	data(){
+		return{
+			currentIndex:0
+		}
+	},
+	props:["skuImageList"],
+	mounted(){
+		this.$bus.$on("getIndex",(index)=>{
+			this.currentIndex = index;
+		});
+		
+	}
   }
 </script>
 
