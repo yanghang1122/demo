@@ -1,7 +1,11 @@
-import {reqGoodsInfo} from '@/api/index.js'
+import {reqGoodsInfo,reqAddOrUpdateShopCart} from '@/api/index.js'
+
+import {getUUID} from "@/utils/uuid_token.js"
 
 const state = {
-	goodInfo:{}
+	goodInfo:{},
+	//游客的临时身份
+	uuid_token:getUUID()
 };
 
 // mutations是修改数据的唯一手段
@@ -18,7 +22,18 @@ const actions = {
 		if(result.code == 200){
 			commit("GETGOODINFO",result.data);
 		}
+	},
+	
+	async AddOrUpdateShopCart({commit},{skuId,skuNum}){
+		let result = await reqAddOrUpdateShopCart(skuId,skuNum);
+		//判断加入购物车是否成功 
+		if(result.code == 200){
+			return "ok"
+		}else{
+			Promise.reject(new Error("faile"))
+		}
 	}
+	
 };
 
 //用于简化仓库数据 理解为计算属性

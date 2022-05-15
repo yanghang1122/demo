@@ -38,9 +38,41 @@ export const reqGoodsInfo = (skuId)=>{
 	return requests({
 		url:`/item/${skuId}`,
 		method:"get",
-		// data:params
 	})
 }
 
+
+
+
+export const reqAddOrUpdateShopCart= (skuId,skuNum)=>{
+	return requests({
+		url:`/cart/addToCart/${skuId}/${skuNum}`,
+		method:"POST",
+	})
+}
+
+
+export const reqCartList = ()=>{
+	return requests({
+		url:'/cart/cartList',
+		method:"get",
+	})
+}
+
+export const reqDeleteCartById = (skuId)=>{
+	return requests({
+		url:`/cart/deleteCart/${skuId}`,
+		method:"delete",
+	})
+}
+
+
+
+export const reqUpdateCheckedById = (skuId,isChecked)=>{
+	return requests({
+		url:`/cart/checkCart/${skuId}/${isChecked}`,
+		method:"GET",
+	})
+}
 
 
