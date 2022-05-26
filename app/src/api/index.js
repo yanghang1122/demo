@@ -76,3 +76,92 @@ export const reqUpdateCheckedById = (skuId,isChecked)=>{
 }
 
 
+export const reqGetCode = (phone)=>{
+	return requests({
+		url:`/user/passport/sendCode/${phone}`,
+		method:"GET",
+	})
+}
+
+
+export const reqUserRegister = (data)=>{
+	return requests({
+		url:`/user/passport/register`,
+		method:"post",
+		data:data
+	})
+}
+
+export const reqUserLogin = (data)=>{
+	return requests({
+		url:"user/passport/login",
+		method:"post",
+		data:data
+	})
+}
+
+
+
+export const reqUserInfo = ()=>{
+	return requests({
+		url:"user/passport/auth/getUserInfo",
+		method:"get"
+	})
+}
+
+
+export const reqlogOut = ()=>{
+	return requests({
+		url:"/user/passport/logout",
+		method:"get"
+	})
+}
+
+
+export const reqAddressInfo = ()=>{
+	return requests({
+		url:"/user/userAddress/auth/findUserAddressList",
+		method:"get"
+	})
+}
+
+export const reqOrderInfo = ()=>{
+	return requests({
+		url:"/order/auth/trade",
+		method:"get"
+	})
+}
+
+
+
+export const reqSubmitOrder = (tradeNo,data)=>{
+	return requests({
+		url:`/order/auth/submitOrder?tradeNo=${tradeNo}`,
+		method:"post",
+		data:data
+	})
+}
+
+
+
+
+export const reqPayInfo = (orderId)=>{
+	return requests({
+		url:`/payment/weixin/createNative/${orderId}`,
+		method:"get",
+	})
+}
+
+export const reqPayStatus = (orderId)=>{
+	return requests({
+		url:`/payment/weixin/queryPayStatus/${orderId}`,
+		method:"get",
+	})
+}
+
+export const reqMyOrderList = (page,limit)=>{
+	return requests({
+		url:`/order/auth/${page}/${limit}`,
+		method:"get",
+	})
+}

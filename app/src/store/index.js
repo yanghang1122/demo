@@ -9,6 +9,8 @@ import home from './home/index.js'
 import search from './search/index.js'
 import detail from './detail/index.js'
 import shopCart from './shopCart/index.js'
+import user from './user/index.js'
+import trade from './trade/index.js'
 
 
 //把vuex大仓库分解成若干个小仓库 
@@ -17,7 +19,9 @@ export default new Vuex.Store({
 		home,
 		search,
 		detail,
-		shopCart
+		shopCart,
+		user,
+		trade
 	}
 
 })

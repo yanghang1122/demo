@@ -49,7 +49,7 @@
 								<div class="list-wrap">
 										<router-link :to="`/detail/${good.id}`">
 											
-												<img :src="good.defaultImg" />
+												<img v-lazy="good.defaultImg" />
 												
 											
 										</router-link>
